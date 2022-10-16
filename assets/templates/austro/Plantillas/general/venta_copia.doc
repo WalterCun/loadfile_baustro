@@ -1,0 +1,36 @@
+C;B;0;@_LOGOCOMERCIO_@
+C;B;0;@_LOGOEMISOR_@
+C;B;0;@_LOGOPRODUCTO_@
+C;R;1;-13;1;@_VERSION_APP_@
+C;R;1;-13;1;@_DIRECCION_COMERCIO_@
+L;R;0;-2;                                  
+C;R;1;-13;1;VENTA AUTORIZACION: @_AUTORIZACION_@
+C;R;1;-13;1;@_TRX_TYPE_@
+L;R;0;-2; 
+\l;BASE CONSUMO TARIFA @_TARIFA_@:
+\l;C;              @_SIGNO_@
+R;@_BASE12_@
+\l;BASE CONSUMO TARIFA 0:
+\l;C;              @_SIGNO_@
+R;@_BASE0_@
+\l;SUBTOTAL:
+\l;C;              @_SIGNO_@
+R;@_SUBTOTALCONSUMOS_@
+@_ITEMS_ADICIONALES_@
+\l;L;B;1;-9;1;TOTAL AUTORIZADO :           @_SIGNO_@
+R;B;1;-9;1;@_TOTAL_@
+C;B;1;0;0;@_LEYENDA_DUPLICADO_@
+J;R;0;0;1;EN @_CIUDAD_@ - @_PAIS_@, EL @_FECHA_@, A LAS @_HORA_@
+C;B;0;CODIGO: @_COMERCIO_@ TERMINAL: @_TID_@
+C;B;0;TARJETA: @_NTARJETA_@ @_PRESENTE_@
+C;B;0;@_COPIAS_@ CLIENTE
+C;B;0;@_PUBLICIDAD_@
+C;B;0;@_PUBLICIDAD_119_@
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

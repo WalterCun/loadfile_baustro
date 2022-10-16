@@ -1,0 +1,19 @@
+C;B;1;1;1;RED ADQUIRENTE :  @_ADQUIRENTE_@
+@_REPORTE_EMI_@
+ 
+\l;L;VOUCHERS :                CANT:
+R;@_NUMVOUCHERS_@
+\l;L;BASE CONSUMO TARIFA @_TARIFA_@:
+\l;C;              @_SIGNO_@
+R;@_BASE12_@
+\l;L;BASE CONSUMO TARIFA 0:
+\l;C;              @_SIGNO_@
+R;@_BASE0_@
+\l;L;SUBTOTAL:
+\l;C;              @_SIGNO_@
+R;@_SUBTOTALCONSUMOS_@
+@_ITEMS_ADICIONALES_@
+\l;L;B;1;-9;1;TOTAL @_ADQUIRENTE_@                        
+\l;C;B;1;-9;1;                         @_SIGNO_@
+R;B;1;-9;1;@_TOTAL_@
+==========================================

@@ -1,0 +1,30 @@
+@_LOGOCOMERCIO_@
+@_LOGOPRODUCTO_@
+C;R;1;-9;1;@_VERSION_APP_@
+C;R;1;-9;1;@_DIRECCION_COMERCIO_@
+C;R;1;-9;1;@_TELEFONO_COMERCIO_@
+C;B;1;-9;1;COMERCIO: @_COMERCIO_@
+\l;L;B;1;-9;1;TID: @_TID_@
+R;B;1;-9;1;LOTE: @_LOTE_@
+J;R;0;0;1;EN @_CIUDAD_@ - @_PAIS_@, EL @_FECHA_@, A LAS @_HORA_@
+C;B;1;0;0;DETALLE DE FACTURACION
+==========================================
+@_REPORTE_ADQ_@
+==========================================
+C;B;2;-10;1;TOTAL GENERAL
+\l;L;TOTAL DE VOUCHERS :       CANT:
+R;@_NUMVOUCHERS_@
+\l;L;BASE CONSUMO TARIFA @_TARIFA_@:
+\l;C;              @_SIGNO_@
+R;@_BASE12_@
+\l;L;BASE CONSUMO TARIFA 0:
+\l;C;              @_SIGNO_@
+R;@_BASE0_@
+\l;L;SUBTOTAL:
+\l;C;              @_SIGNO_@
+R;@_SUBTOTALCONSUMOS_@
+@_ITEMS_ADICIONALES_@
+\l;L;B;1;-9;1;TOTAL LOTE  @_LOTE_@ :       
+\l;C;B;1;-9;1;                         @_SIGNO_@
+R;B;1;-9;1;@_TOTAL_@
+==========================================
