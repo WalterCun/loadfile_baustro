@@ -47,7 +47,8 @@ Future<int> readFile({required String pathFilename}) async {
 //   return directory.path;
 // }
 
-Future<File> transfer(File sourceFile,{required String to, bool deleteOrigin=true}) async {
+Future<File> transfer(sourceFile,
+    {required String to, bool deleteOrigin = true}) async {
   try {
     /// prefer using rename as it is probably faster
     /// if same directory path
@@ -55,18 +56,16 @@ Future<File> transfer(File sourceFile,{required String to, bool deleteOrigin=tru
   } catch (e) {
     /// if rename fails, copy the source file
     final newFile = await sourceFile.copy(to);
+    if (deleteOrigin) _delete(path: sourceFile.path);
     return newFile;
   }
 }
 
 Future<bool> _delete({required String path}) async {
-  if (await Directory(path).exists()){
+  if (await Directory(path).exists()) {
     return true;
   }
-  if (await File(path).exists()){
-
-  }
-
+  if (await File(path).exists()) {}
 
   return false;
   // path!.deleteSync(recursive: true);
