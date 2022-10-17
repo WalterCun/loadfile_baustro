@@ -43,7 +43,7 @@ class _FLoadFileAppState extends State<FLoadFileApp> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp(
-        title: 'test',
+        title: 'FILE_LOADER - GENERADOR DE COMERCIOS',
         debugShowCheckedModeBanner: DEBUG,
         navigatorKey: navigatorKey,
         initialRoute: HomeScreen.name,

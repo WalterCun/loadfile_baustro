@@ -61,7 +61,7 @@ dependencies:
 
   # Paquete de gestion de notificaciones locales
   # https://pub.dev/packages/flutter_local_notifications
-  flutter_local_notifications: ^9.4.0
+  flutter_local_notifications: ^12.0.2
 
   # Paquete para gestionar Toast en pantalla
   # https://pub.dev/packages/bot_toast
@@ -69,7 +69,7 @@ dependencies:
 
   # Paquete para Gestion de Audio
   # https://pub.dev/packages/audioplayer
-  audioplayers: ^0.20.1
+  audioplayers: ^1.1.1
 
   # Paquete UI para manipulacion de imagenes SVG
   # https://pub.dev/packages/flutter_svg
@@ -81,7 +81,7 @@ dependencies:
 
   # Paquete de Themas pre-configurados
   # https://pub.dev/packages/flex_color_scheme
-  flex_color_scheme: ^4.2.0
+  flex_color_scheme: ^6.0.1
 
   url_launcher: ^6.1.6
 
@@ -175,3 +175,11 @@ flutter:
 analyzer:
   enable-experiment:
     - control-flow-collections
+
+objectbox:
+  # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
+  output_dir: custom
+  # Or optionally specify the lib and test output folder separately.
+  # output_dir:
+  #   lib: custom
+  #   test: other

@@ -46,3 +46,6 @@ Future<int> readFile({required String pathFilename}) async {
 //
 //   return directory.path;
 // }
+
+void moveFile() {}
+void copyFile() {}
