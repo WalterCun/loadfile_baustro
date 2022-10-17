@@ -1,27 +1,30 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sizer/sizer.dart';
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
-
-import 'package:loadfile_baustro/conf/routers.dart';
-
-// late ObjectBox objectBox;
+import 'apps/home/home.dart';
+import 'conf/routers.dart';
+import 'conf/settings.dart';
+import 'l10n/l10n.dart';
 
 main() {
-  // Avoid errors caused by flutter upgrade.
-  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const FLoadFileApp());
 
   doWhenWindowReady(() {
     final win = appWindow;
-    const initialSize = Size(720, 720);
-    win.minSize = initialSize;
-    win.size = initialSize;
-    win.alignment = Alignment.center;
+    final initialSize = Size(720,720);
+    win
+      ..minSize = initialSize
+      ..size = initialSize
+      ..alignment = Alignment.center
+      ..title = "POS DIGITAL - COMERCIOS";
     win.show();
   });
 
-  runApp(const FLoadFileApp());
+  /// Avoid errors caused by flutter upgrade.
+  /// Importing 'package:flutter/widgets.dart' is required.
+  WidgetsFlutterBinding.ensureInitialized();
 }
 
 /// Navigator global, para utilizarlo en lugares sin contexto (context)
@@ -38,27 +41,19 @@ class _FLoadFileAppState extends State<FLoadFileApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'POS DIGITAL - GENERADOR DE COMERCIOS',
-      debugShowCheckedModeBanner: true,
-      themeMode: ThemeMode.light,
-      navigatorKey: navigatorKey,
-      // theme: austroDigitalTheme,
-      initialRoute: '/',
-      routes: routes,
-      onGenerateRoute: (settings) => onGenerateRoutes(settings),
-      // onUnknownRoute: ,
-      localizationsDelegates: const [
-        /// Para traducciones de widgets
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        /// Para posibles traducciones de la app
-        Locale('es'), // Spanish, no country code
-        Locale('en'), // English, no country code
-      ],
+    return Sizer(
+      builder: (context, orientation, deviceType) => MaterialApp(
+        title: 'test',
+        debugShowCheckedModeBanner: DEBUG,
+        navigatorKey: navigatorKey,
+        initialRoute: HomeScreen.name,
+        routes: routes,
+        onGenerateRoute: (settings) => onGenerateRoutes(settings),
+        onUnknownRoute: onUnknownRoutes,
+        supportedLocales: L10n.supportedLocales,
+        localizationsDelegates: L10n.localizationsDelegates,
+        // locale: locale.locale,
+      ),
     );
   }
 }

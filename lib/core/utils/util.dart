@@ -1,5 +1,19 @@
-import 'package:url_launcher/url_launcher.dart';
+import 'dart:developer';
 
-void openExplorer(){
-  launchUrl(Uri.parse('file://C:'));
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
+
+Future<String?> openExplorer() async {
+  String? _directoryPath;
+
+  try {
+    String? path = await FilePicker.platform.getDirectoryPath();
+    _directoryPath = path;
+  } on PlatformException catch (e) {
+    log('$e');
+  } catch (e) {
+    log('$e');
+  }
+
+  return _directoryPath;
 }

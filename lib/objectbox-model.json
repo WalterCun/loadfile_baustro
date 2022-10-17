@@ -50,10 +50,36 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:8522115213227292355",
+      "lastPropertyId": "3:4513736657297540436",
+      "name": "Config",
+      "properties": [
+        {
+          "id": "1:833605113465981960",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:849899567291506169",
+          "name": "parameter",
+          "type": 9,
+          "flags": 8,
+          "indexId": "1:485052129475565191"
+        },
+        {
+          "id": "3:4513736657297540436",
+          "name": "value",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:6350833518748623969",
-  "lastIndexId": "0:0",
+  "lastEntityId": "3:8522115213227292355",
+  "lastIndexId": "1:485052129475565191",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

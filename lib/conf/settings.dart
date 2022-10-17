@@ -1,4 +1,4 @@
-const bool DEBUG = false;
+const bool DEBUG = true;
 
 const Map DATABASES = {
   'default': {
