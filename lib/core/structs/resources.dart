@@ -1,3 +1,5 @@
+import 'package:loadfile_baustro/apps/home/shops.dart';
+
 class GenericResources {
   late final String path;
   late final String? tree;
@@ -28,6 +30,10 @@ class GenericResources {
 
 class Imagen extends GenericResources {
   Imagen({required super.path});
+}
+
+class Gif extends GenericResources{
+  Gif({required super.path});
 }
 
 class Video extends GenericResources {

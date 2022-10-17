@@ -66,3 +66,8 @@ doc/api/
 
 /lib/objectbox.g.dart
 /lib/objectbox-model.json
+.vscode/launch.json
+test/widget_test.dart
+.gitignore
+analysis_options.yaml
+.metadata
