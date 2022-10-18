@@ -9,7 +9,7 @@ import '../../core/structs/paths.dart' show gifDescanzando;
 import '../../core/themes/fonts.dart';
 import '../../core/widgets/buttons/icon_buttons/iconbuttonmenu_widget.dart';
 import '../../core/widgets/floatactionbutton/floatactionbutton_widget.dart';
-import '../home/register.dart';
+import '../create_store/register.dart';
 
 class HomeScreen extends StatefulWidget {
   static const name = 'home/';
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
             tooltip: AppLocalizations.of(context)!
                 .widget_floatActionButton_crearComercio,
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed(RegisterScreen.name);
+              Navigator.of(context).pushNamed(RegisterScreen.name);
             },
           ),
           IconMenuFloatButton(

@@ -27,25 +27,25 @@ class FloatCircularButton extends StatefulWidget {
 
   FloatCircularButton(
       {Key? key,
-        this.alignment = Alignment.bottomRight,
-        this.ringColor,
-        this.ringDiameter,
-        this.ringWidth,
-        this.fabSize = 64.0,
-        this.fabElevation = 8.0,
-        this.fabColor,
-        this.fabOpenColor,
-        this.fabCloseColor,
-        this.fabIconBorder,
-        this.fabChild,
-        this.fabOpenIcon = const Icon(Icons.menu),
-        this.fabCloseIcon = const Icon(Icons.close),
-        this.fabMargin = const EdgeInsets.all(16.0),
-        this.animationDuration = const Duration(milliseconds: 800),
-        this.animationCurve = Curves.easeInOutCirc,
-        this.onDisplayChange,
-        required this.children})
-      : assert(children.length >= 1),
+      this.alignment = Alignment.bottomRight,
+      this.ringColor,
+      this.ringDiameter,
+      this.ringWidth,
+      this.fabSize = 64.0,
+      this.fabElevation = 8.0,
+      this.fabColor,
+      this.fabOpenColor,
+      this.fabCloseColor,
+      this.fabIconBorder,
+      this.fabChild,
+      this.fabOpenIcon = const Icon(Icons.menu),
+      this.fabCloseIcon = const Icon(Icons.close),
+      this.fabMargin = const EdgeInsets.all(16.0),
+      this.animationDuration = const Duration(milliseconds: 800),
+      this.animationCurve = Curves.easeInOutCirc,
+      this.onDisplayChange,
+      required this.children})
+      : assert(children.isNotEmpty),
         super(key: key);
 
   @override
@@ -146,7 +146,7 @@ class FloatCircularButtonState extends State<FloatCircularButton>
             child: OverflowBox(
               maxWidth: _ringDiameter,
               maxHeight: _ringDiameter,
-              child: Container(
+              child: SizedBox(
                 width: _ringDiameter,
                 height: _ringDiameter,
                 child: CustomPaint(
@@ -156,22 +156,20 @@ class FloatCircularButtonState extends State<FloatCircularButton>
                   ),
                   child: _scaleAnimation.value == 1.0
                       ? Transform.rotate(
-                    angle: (2 * pi) *
-                        _rotateAnimation.value *
-                        _directionX *
-                        _directionY,
-                    child: Container(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: widget.children
-                            .asMap()
-                            .map((index, child) => MapEntry(index,
-                            _applyTransformations(child, index)))
-                            .values
-                            .toList(),
-                      ),
-                    ),
-                  )
+                          angle: (2 * pi) *
+                              _rotateAnimation.value *
+                              _directionX *
+                              _directionY,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: widget.children
+                                .asMap()
+                                .map((index, child) => MapEntry(index,
+                                    _applyTransformations(child, index)))
+                                .values
+                                .toList(),
+                          ),
+                        )
                       : Container(),
                 ),
               ),
@@ -179,7 +177,7 @@ class FloatCircularButtonState extends State<FloatCircularButton>
           ),
 
           // FAB
-          Container(
+          SizedBox(
             width: widget.fabSize,
             height: widget.fabSize,
             child: RawMaterialButton(
@@ -196,11 +194,9 @@ class FloatCircularButtonState extends State<FloatCircularButton>
                 }
               },
               child: Center(
-                child: widget.fabChild == null
-                    ? (_scaleAnimation.value == 1.0
-                    ? widget.fabCloseIcon
-                    : widget.fabOpenIcon)
-                    : widget.fabChild,
+                child: widget.fabChild ?? (_scaleAnimation.value == 1.0
+                        ? widget.fabCloseIcon
+                        : widget.fabOpenIcon),
               ),
             ),
           ),
@@ -218,15 +214,15 @@ class FloatCircularButtonState extends State<FloatCircularButton>
     }
 
     final angle =
-    vector.radians(90.0 / (widget.children.length - 1) * index + angleFix);
+        vector.radians(90.0 / (widget.children.length - 1) * index + angleFix);
 
     return Transform(
         transform: Matrix4.translationValues(
             (-(_ringDiameter! / 2) * cos(angle) +
-                (_ringWidth! / 2 * cos(angle))) *
+                    (_ringWidth! / 2 * cos(angle))) *
                 _directionX,
             (-(_ringDiameter! / 2) * sin(angle) +
-                (_ringWidth! / 2 * sin(angle))) *
+                    (_ringWidth! / 2 * sin(angle))) *
                 _directionY,
             0.0),
         alignment: FractionalOffset.center,
@@ -241,7 +237,7 @@ class FloatCircularButtonState extends State<FloatCircularButton>
     _fabColor = widget.fabColor ?? Theme.of(context).primaryColor;
     _fabOpenColor = widget.fabOpenColor ?? _fabColor;
     _fabCloseColor = widget.fabCloseColor ?? _fabColor;
-    _fabIconBorder = widget.fabIconBorder ?? CircleBorder();
+    _fabIconBorder = widget.fabIconBorder ?? const CircleBorder();
     _screenWidth = MediaQuery.of(context).size.width;
     _screenHeight = MediaQuery.of(context).size.height;
     _ringDiameter =
@@ -323,25 +319,19 @@ class _RingPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
+// class FloatColumBottom extends StatefulWidget {
+//   // const FloatColumBottom.builder({Key? key});
+//   const FloatColumBottom({Key? key}) : super(key: key);
+//
+//   @override
+//   State<FloatColumBottom> createState() => _FloatColumBottomState();
+// }
 
-class FloatColunmButtom extends StatefulWidget {
-  const FloatColunmButtom({Key? key}) : super(key: key);
-
-  @override
-  State<FloatColunmButtom> createState() => _FloatColunmButtomState();
-}
-
-class _FloatColunmButtomState extends State<FloatColunmButtom> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FloatingActionButton(
-          child: const Icon(Icons.save),
-          onPressed: () {},
-        )
-      ],
-    );
-  }
-}
-
+// class _FloatColumBottomState extends State<FloatColumBottom> {
+//   @override
+//   Widget build(BuildContext context) {
+//     List<Widget> buttons = [];
+//
+//     return Container();
+//   }
+// }

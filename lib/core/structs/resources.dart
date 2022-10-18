@@ -1,5 +1,3 @@
-import 'package:loadfile_baustro/apps/home/shops.dart';
-
 class GenericResources {
   late final String path;
   late final String? tree;
@@ -7,14 +5,14 @@ class GenericResources {
   late final String? ext;
 
   GenericResources({required this.path}) {
-    final data = getData(this.path);
+    final data = _getData(path);
 
-    this.tree = data['tree'];
-    this.filename = data['filename'];
-    this.ext = data['ext'];
+    tree = data['tree'];
+    filename = data['filename'];
+    ext = data['ext'];
   }
 
-  Map getData(String path) {
+  Map _getData(String path) {
     String fileName = path.split("\/").last;
     String treeDir = path.replaceAll('/$fileName', '');
 

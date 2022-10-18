@@ -5,3 +5,4 @@ final Imagen imgLogo = Imagen(path: 'assets/img/logo.png');
 
 final Gif gifDescanzando = Gif(path: "assets/gif/descanzo.gif");
 final Gif gifTrabajando = Gif(path: "assets/gif/trabajando.gif");
+final Gif gifEsperando = Gif(path: "assets/gif/esperando.gif");

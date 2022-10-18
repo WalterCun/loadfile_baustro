@@ -1,21 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:loadfile_baustro/apps/create_store/shops.dart';
 
 import 'package:sizer/sizer.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/models/shops_model.dart';
-import '../../objectbox.g.dart';
+import '../../db/objectbox.g.dart';
 
-import '../home/shops.dart';
 import '../../core/screens/base_screen.dart';
-import '../../core/models/config_model.dart';
+import '../../core/models/models.dart' show Shop, Config;
 import '../../core/themes/fonts.dart';
 import '../../core/themes/input_theme.dart';
 import '../../core/utils/util.dart';
 import '../../core/structs/paths.dart' show gifTrabajando;
+import 'home.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String name = 'register/';
@@ -40,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final verification =
           box.query(Config_.parameter.contains('path_browser')).build().find();
 
-      if (verification.length > 0) {
+      if (verification.isNotEmpty) {
         browser.text = verification.last.value!;
       }
 
@@ -49,12 +49,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.initState();
   }
 
+  Widget _floatActionBottom() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        FloatingActionButton(
+          backgroundColor: Colors.red,
+          hoverColor: Colors.orange,
+          tooltip: 'Cancel store creation,',
+          child: const Icon(Icons.cancel),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(HomeScreen.name);
+          },
+        ),
+        SizedBox(
+          height: 1.5.w,
+        ),
+        FloatingActionButton(
+          backgroundColor: Colors.blue,
+          hoverColor: Colors.green,
+          tooltip: 'Save Changes',
+          child: const Icon(Icons.save),
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              Navigator.of(context)
+                  .pushNamed(GenerateShopScreen.name);
+            }
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
       padding: const EdgeInsets.all(15),
       expanded: false,
-      // floatActionButton: ,
+      floatActionButton: _floatActionBottom(),
       child: Form(
         key: _formKey,
         child: SizedBox(
@@ -78,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: TextFormField(
                           readOnly: true,
                           controller: browser,
-                          style: TextStyle(),
+                          style: const TextStyle(), //TODO: Agregar Style
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                           ),
@@ -114,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     .build()
                                     .find();
 
-                                if (!(verification.length > 0)) {
+                                if (!(verification.isNotEmpty)) {
                                   conf = Config(
                                       parameter: 'path_browser', value: path);
                                   id = box.put(conf);
