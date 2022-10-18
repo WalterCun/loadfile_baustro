@@ -13,10 +13,11 @@ main() {
 
   doWhenWindowReady(() {
     final win = appWindow;
-    final initialSize = Size(720,720);
+    final initialSize = Size(800,800);
     win
       ..minSize = initialSize
       ..size = initialSize
+      ..maxSize = initialSize
       ..alignment = Alignment.center
       ..title = "POS DIGITAL - COMERCIOS";
     win.show();

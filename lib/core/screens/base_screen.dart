@@ -33,8 +33,7 @@ class BaseScreen extends StatefulWidget {
       this.returnBackExit,
       this.activeDrawer,
       this.activeScroll = false,
-        this.expanded=false
-      })
+      this.expanded = false})
       : super(key: key);
 
   @override
@@ -49,32 +48,32 @@ class _BaseScreenState extends State<BaseScreen> {
       drawer: DefaultDrawer(),
       body: WindowBorder(
         color: FloadFileColors.borderWindows,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [...FloadFileColors.gradientScreen],
-                  stops: [0.0, 1.0]),
-            ),
-            child: ListView(
-                shrinkWrap: widget.expanded,
-                children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 1.w),
-                    child: LeadingMenuIconButton(),
-                  ),
-                  Expanded(child: WindowTitleBarBox(child: MoveWindow())),
-                  WindowButtons()
-                ],
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [...FloadFileColors.gradientScreen],
+                stops: [0.0, 1.0]),
+          ),
+          child: ListView(shrinkWrap: widget.expanded, children: [
+            Row(
+              children: [
                 Padding(
-                  padding: widget.padding ?? EdgeInsets.zero,
-                  child:  widget.child,
-                )
-            ]),
+                  padding: EdgeInsets.only(left: 1.w),
+                  child: LeadingMenuIconButton(),
+                ),
+                Expanded(child: WindowTitleBarBox(child: MoveWindow())),
+                WindowButtons()
+              ],
+            ),
+            Padding(
+              padding: widget.padding ?? EdgeInsets.zero,
+              child: widget.expanded ? SizedBox(
+                  height: 80.w,
+                  child: widget.child) : widget.child,
+            ),
+          ]),
         ),
       ),
       floatingActionButton: widget.floatActionButton,

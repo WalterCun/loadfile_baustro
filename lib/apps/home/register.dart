@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/models/shops_model.dart';
 import '../../objectbox.g.dart';
 
 import '../home/shops.dart';
@@ -34,9 +35,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     // Cargar los valores del directorio de carga de archivos
     openStore().then((store) {
-      late Config conf;
-      late int id;
-
       final box = store.box<Config>();
 
       final verification =
@@ -48,7 +46,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       store.close();
     });
-
     super.initState();
   }
 
@@ -57,16 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return BaseScreen(
       padding: const EdgeInsets.all(15),
       expanded: false,
-      floatActionButton: FloatingActionButton(
-        child: const Icon(Icons.save),
-        onPressed: () {
-          log('Save Informations');
-          if (_formKey.currentState!.validate()) {
-            _formKey.currentState!.save();
-            Navigator.of(context).pushNamed(GenerateShopScreen.name);
-          }
-        },
-      ),
+      // floatActionButton: ,
       child: Form(
         key: _formKey,
         child: SizedBox(
@@ -88,11 +76,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          controller: browser,
                           readOnly: true,
+                          controller: browser,
+                          style: TextStyle(),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                           ),
+                          validator: (String? path) {
+                            log('Ruta de salida de comercios: $path');
+                            if (path == null || path.isEmpty) {
+                              return 'EL CAMPO NO PUEDE ESTAR VACIO';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -100,8 +96,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       ElevatedButton(
                         style: InputThemes.elevatedButtonTheme,
-                        child: Text(
-                            AppLocalizations.of(context)!.button_openFileChoose),
+                        child: Text(AppLocalizations.of(context)!
+                            .button_openFileChoose),
                         onPressed: () {
                           openExplorer().then((path) {
                             if (path != null) {
@@ -113,8 +109,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 final box = store.box<Config>();
 
                                 final verification = box
-                                    .query(
-                                    Config_.parameter.contains('path_browser'))
+                                    .query(Config_.parameter
+                                        .contains('path_browser'))
                                     .build()
                                     .find();
 
@@ -155,26 +151,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+                    validator: (String? path) {
+                      log('El nombre del comercio: $path');
+                      if (path == null || path.isEmpty) {
+                        return 'EL CAMPO NO PUEDE ESTAR VACIO';
+                      }
+                      return null;
+                    },
+                    onSaved: (String? shop) async {
+                      late Shop shops;
+                      late int id;
+                      final store = await openStore();
+                      final box = store.box<Shop>();
+
+                      shops = Shop();
+                      id = box.put(shops);
+                      log('New shops create id: $id');
+
+                      store.close();
+                    },
                   ),
                 ],
               ),

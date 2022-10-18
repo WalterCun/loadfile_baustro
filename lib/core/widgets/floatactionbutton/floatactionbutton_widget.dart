@@ -322,3 +322,26 @@ class _RingPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+
+class FloatColunmButtom extends StatefulWidget {
+  const FloatColunmButtom({Key? key}) : super(key: key);
+
+  @override
+  State<FloatColunmButtom> createState() => _FloatColunmButtomState();
+}
+
+class _FloatColunmButtomState extends State<FloatColunmButtom> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        FloatingActionButton(
+          child: const Icon(Icons.save),
+          onPressed: () {},
+        )
+      ],
+    );
+  }
+}
+
