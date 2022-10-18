@@ -71,3 +71,4 @@ test/widget_test.dart
 .gitignore
 analysis_options.yaml
 .metadata
+lib/db/objectbox.g.dart
