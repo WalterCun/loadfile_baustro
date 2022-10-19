@@ -1,20 +1,21 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_settings_ui/flutter_settings_ui.dart';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/animated/section_animated.dart';
-import '../../core/screens/base_screen.dart';
-import '../../core/structs/paths.dart' show gifEsperando;
-import '../../core/themes/fonts.dart';
-import '../../core/themes/input_theme.dart';
-import '../../core/utils/util.dart';
-import '../widgets/custom_widget.dart';
+import '../../../core/screens/base_screen.dart';
+import '../../../core/structs/paths.dart' show gifEsperando;
+import '../../../core/themes/fonts.dart';
+import '../../../core/themes/input_theme.dart';
+import '../../../core/utils/util.dart';
+import '../../widgets/custom_widget.dart';
 
 class GenerateShopScreen extends StatefulWidget {
   static const String name = 'generate_shop/';
@@ -115,7 +116,7 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
             ),
             ElevatedButton(
               style: InputThemes.elevatedButtonTheme,
-              child: Text(AppLocalizations.of(context)!.button_openFileChoose),
+              child: const Text('ELEGIR UNA IMAGEN'),
               onPressed: () {
                 openFileExplorer(
                   type: FileType.custom,
@@ -176,11 +177,15 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: TextFormField(
-                                initialValue: '',
                                 decoration: const InputDecoration(
-                                  label: Text('GIRO'),
+                                  label: Text('CODIGO DE COMERCIO'),
                                   border: OutlineInputBorder(),
                                 ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                validator: (String? codigoComercio){return 'CAMPO OBLIGATORIO';},
+                                onSaved: (String? codigoComercio){},
                               ),
                             ),
                           ),
@@ -188,11 +193,15 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: TextFormField(
-                                initialValue: '',
                                 decoration: const InputDecoration(
                                   label: Text('SERIE DE POS'),
                                   border: OutlineInputBorder(),
                                 ),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                validator: (String? codigoComercio){return 'CAMPO OBLIGATORIO';},
+                                onSaved: (String? codigoComercio){},
                               ),
                             ),
                           )
@@ -203,8 +212,80 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                 ],
               ),
               SettingsSection(
+                title: 'PARAMETROS CLT HDR',
+                tiles:  [
+                  CustomTile(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                label: Text('DIRECCION DEL COMERCIO'),
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      label: Text('TELEFONO'),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    validator: (String? codigoComercio){return 'CAMPO OBLIGATORIO';},
+                                    onSaved: (String? codigoComercio){},
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: TextFormField(
+                                    initialValue: 'CUENCA',
+                                    decoration: const InputDecoration(
+                                      label: Text('CUIDAD'),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    validator: (String? codigoComercio){return 'CAMPO OBLIGATORIO';},
+                                    onSaved: (String? codigoComercio){},
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      label: Text('RUC'),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    validator: (String? codigoComercio){return 'CAMPO OBLIGATORIO';},
+                                    onSaved: (String? codigoComercio){},
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      )),
+                ],
+              ),
+              SettingsSection(
                 title: 'PARAMETROS CLT IAD',
-                tiles: [
+                tiles: const [
                   CustomTile(
                       child: SwitchCustomTile(
                     title: 'MONTO FIJO',
@@ -235,20 +316,8 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                   )),
                 ],
               ),
-              SettingsSection(
-                title: 'PARAMETROS CLT HDR',
-                tiles: [
-                  CustomTile(
-                      child: SwitchCustomTile(
-                    title: 'MONTO FIJO',
-                    children: [
-                      Text('Sorpresa'),
-                    ],
-                  )),
-                ],
-              ),
               CustomSection(
-                  child: CustomTile(
+                  child: const CustomTile(
                       child: SizedBox(
                 height: 25,
               )))

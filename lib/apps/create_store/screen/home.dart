@@ -1,15 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/screens/base_screen.dart';
-import '../../core/structs/paths.dart' show gifDescanzando;
-import '../../core/themes/fonts.dart';
-import '../../core/widgets/buttons/icon_buttons/iconbuttonmenu_widget.dart';
-import '../../core/widgets/floatactionbutton/floatactionbutton_widget.dart';
-import '../create_store/register.dart';
+import '../../../core/screens/base_screen.dart';
+import '../../../core/structs/paths.dart' show gifDescanzando;
+import '../../../core/themes/fonts.dart';
+import '../../../core/widgets/buttons/icon_buttons/iconbuttonmenu_widget.dart';
+import '../../../core/widgets/floatactionbutton/floatactionbutton_widget.dart';
+import 'register.dart';
 
 class HomeScreen extends StatefulWidget {
   static const name = 'home/';
@@ -22,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Widget floatCircularButton() {
     return FloatCircularButton(
-        ringWidth: 10.h, // 73 ancho de banda de menu
+        ringWidth: Platform.isWindows ? 10.h : 73, // 73 ancho de banda de menu
         ringDiameter: 60.h, // 362 diametro total ocupado del Menu
         ringColor: Colors.orange, // color de menu
         fabSize: 50,

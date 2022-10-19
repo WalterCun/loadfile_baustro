@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../apps/splash/splash.dart';
-import '../apps/create_store/register.dart';
-import '../apps/create_store/shops.dart';
-import '../apps/create_store/home.dart';
+import '../apps/create_store/screen/register.dart';
+import '../apps/create_store/screen/shops.dart';
+import '../apps/create_store/screen/home.dart';
 import '../core/screens/error_screen.dart';
 import '../core/screens/settings_screen.dart';
 

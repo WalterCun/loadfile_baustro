@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
 
-import 'apps/create_store/home.dart';
+import 'apps/create_store/screen/home.dart';
 import 'conf/routers.dart';
 import 'conf/settings.dart';
 import 'l10n/l10n.dart';
