@@ -1,16 +1,20 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/animated/section_animated.dart';
 import '../../core/screens/base_screen.dart';
 import '../../core/structs/paths.dart' show gifEsperando;
 import '../../core/themes/fonts.dart';
 import '../../core/themes/input_theme.dart';
 import '../../core/utils/util.dart';
+import '../widgets/custom_widget.dart';
 
 class GenerateShopScreen extends StatefulWidget {
   static const String name = 'generate_shop/';
@@ -22,6 +26,7 @@ class GenerateShopScreen extends StatefulWidget {
 
 class _GenerateShopScreenState extends State<GenerateShopScreen> {
   int currentPageIndex = 0;
+
   TextEditingController img = TextEditingController(text: '');
 
   @override
@@ -38,57 +43,44 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.store),
+            selectedIcon: Icon(Icons.check),
             label: 'Bitmaps',
           ),
           NavigationDestination(
-            icon: Icon(Icons.commute),
+            icon: Icon(Icons.handyman),
+            selectedIcon: Icon(Icons.check),
             label: 'Configurations',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.bookmark),
-            icon: Icon(Icons.bookmark_border),
+            icon: Icon(Icons.web),
+            selectedIcon: Icon(Icons.check),
             label: 'Templates',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.bookmark),
-            icon: Icon(Icons.bookmark_border),
+            icon: Icon(Icons.publish),
+            selectedIcon: Icon(Icons.check),
             label: 'Publicised',
           ),
         ],
       ),
       floatActionButton: FloatingActionButton(
+        heroTag: 'btn',
         tooltip: 'Guardar Cambios',
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
+        hoverColor: Colors.green,
         onPressed: () {},
-        child: const Icon(Icons.save),
+        child: const Icon(Icons.build),
       ),
       child: <Widget>[
         _pageBitsmaps(),
-        Container(
-          color: Colors.green,
-          alignment: Alignment.center,
-          child: const Text('Configurations'),
-        ),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Templates'),
-        ),
-        Container(
-          color: Colors.amber,
-          alignment: Alignment.center,
-          child: const Text('Publicised'),
-        ),
+        _pageConfigurations(),
+        _pageTemplates(),
+        _pagePublished(),
       ][currentPageIndex],
     );
   }
 
   Widget _pageBitsmaps() {
-    // Container(
-    //   color: Colors.red,
-    //   alignment: Alignment.center,
-    //   child: const Text('Bitmaps'),
-    // );
     return Column(
       children: [
         Padding(
@@ -115,9 +107,7 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                   }
                   return null;
                 },
-                onSaved: (String? path){
-
-                },
+                onSaved: (String? path) {},
               ),
             ),
             SizedBox(
@@ -144,12 +134,144 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
         ),
         img.text.isEmpty
             ? Expanded(child: Image.asset(gifEsperando.path))
-            : Image.asset(
-                img.text,
-                height: 400,
-                width: 400,
+            : Expanded(
+                child: Image.file(File(img.text)),
               ),
       ],
+    );
+  }
+
+  Widget _pageConfigurations() {
+    return Column(
+      children: [
+        Expanded(
+          child: SettingsList(
+            shrinkWrap: true,
+            sections: [
+              SettingsSection(
+                titleWidget: Text(
+                  'DATOS DEL COMERCIO',
+                  style: TextStyle(
+                      fontSize: 8.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black),
+                ),
+                tiles: [
+                  CustomTile(
+                      child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: TextFormField(
+                          initialValue: '',
+                          decoration: const InputDecoration(
+                            label: Text('NOMBRE DEL COMERCIO'),
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                initialValue: '',
+                                decoration: const InputDecoration(
+                                  label: Text('GIRO'),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: TextFormField(
+                                initialValue: '',
+                                decoration: const InputDecoration(
+                                  label: Text('SERIE DE POS'),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
+                ],
+              ),
+              SettingsSection(
+                title: 'PARAMETROS CLT IAD',
+                tiles: [
+                  CustomTile(
+                      child: SwitchCustomTile(
+                    title: 'MONTO FIJO',
+                    children: [
+                      Text('Sorpresa'),
+                    ],
+                  )),
+                  CustomTile(
+                      child: SwitchCustomTile(
+                    title: 'INTERES',
+                    children: [
+                      Text('Sorpresa'),
+                    ],
+                  )),
+                  CustomTile(
+                      child: SwitchCustomTile(
+                    title: 'PROPINA',
+                    children: [
+                      Text('Sorpresa'),
+                    ],
+                  )),
+                  CustomTile(
+                      child: SwitchCustomTile(
+                    title: 'SERVICIO',
+                    children: [
+                      Text('Sorpresa'),
+                    ],
+                  )),
+                ],
+              ),
+              SettingsSection(
+                title: 'PARAMETROS CLT HDR',
+                tiles: [
+                  CustomTile(
+                      child: SwitchCustomTile(
+                    title: 'MONTO FIJO',
+                    children: [
+                      Text('Sorpresa'),
+                    ],
+                  )),
+                ],
+              ),
+              CustomSection(
+                  child: CustomTile(
+                      child: SizedBox(
+                height: 25,
+              )))
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _pageTemplates() {
+    return Container(
+      color: Colors.blue,
+      alignment: Alignment.center,
+      child: const Text('Templates'),
+    );
+  }
+
+  _pagePublished() {
+    return Container(
+      color: Colors.amber,
+      alignment: Alignment.center,
+      child: const Text('Marketing'),
     );
   }
 }

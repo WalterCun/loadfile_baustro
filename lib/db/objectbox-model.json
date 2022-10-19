@@ -30,13 +30,7 @@
           "type": 1
         }
       ],
-      "relations": [
-        {
-          "id": "1:8553315540855453725",
-          "name": "shop",
-          "targetId": "6:4955514230935774485"
-        }
-      ]
+      "relations": []
     },
     {
       "id": "2:4270968864036470725",
@@ -93,14 +87,6 @@
           "id": "2:1470597563572463354",
           "name": "serie",
           "type": 9
-        },
-        {
-          "id": "3:4614818150808207134",
-          "name": "historyId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "2:7508026259719075340",
-          "relationTarget": "History"
         }
       ],
       "relations": []
@@ -154,22 +140,6 @@
           "id": "6:1136400180579772093",
           "name": "phone",
           "type": 9
-        },
-        {
-          "id": "7:4306759906828667758",
-          "name": "historyId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "3:4515511116789690400",
-          "relationTarget": "History"
-        },
-        {
-          "id": "8:7050491115795440333",
-          "name": "confshopId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "4:9191098613801237017",
-          "relationTarget": "ConfShops"
         }
       ],
       "relations": []
@@ -196,8 +166,18 @@
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
-  "retiredRelationUids": [],
+  "retiredIndexUids": [
+    7508026259719075340,
+    4515511116789690400,
+    9191098613801237017
+  ],
+  "retiredPropertyUids": [
+    4614818150808207134,
+    4306759906828667758,
+    7050491115795440333
+  ],
+  "retiredRelationUids": [
+    8553315540855453725
+  ],
   "version": 1
 }

@@ -55,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
+          heroTag: 'return Home',
           backgroundColor: Colors.red,
           hoverColor: Colors.orange,
           tooltip: 'Cancel store creation,',
@@ -67,6 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           height: 1.5.w,
         ),
         FloatingActionButton(
+          heroTag: 'continueShops',
           backgroundColor: Colors.blue,
           hoverColor: Colors.green,
           tooltip: 'Save Changes',

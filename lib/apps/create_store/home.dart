@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Widget floatCircularButton() {
     return FloatCircularButton(
+
         ringWidth: 10.h, // 73 ancho de banda de menu
         ringDiameter: 60.h, // 362 diametro total ocupado del Menu
         ringColor: Colors.orange, // color de menu

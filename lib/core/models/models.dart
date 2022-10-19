@@ -13,8 +13,8 @@ class Shop {
   String? direction;
   String? phone;
 
-  final history = ToOne<History>();
-  final confshop = ToOne<ConfShops>();
+  // final history = ToOne<History>();
+  // final confshop = ToOne<ConfShops>();
 }
 
 @Entity()
@@ -26,7 +26,7 @@ class ConfShops {
   bool tip = false; // propina
   bool service = false; // servicioç
 
-  final shop = ToMany<Shop>();
+  // final shop = ToMany<Shop>();
 }
 
 @Entity()
@@ -60,7 +60,7 @@ class Device {
 
   String? serie;
 
-  final history = ToOne<History>();
+  // final history = ToOne<History>();
 }
 
 /// ***************************************************************************
@@ -70,11 +70,11 @@ class History {
   @Id()
   int id = 0;
 
-  @Backlink("history")
-  final shop = ToMany<Shop>();
+  // @Backlink("history")
+  // final shop = ToMany<Shop>();
 
-  @Backlink("history")
-  final device = ToMany<Device>();
+  // @Backlink("history")
+  // final device = ToMany<Device>();
 }
 
 /// ***************************************************************************
@@ -85,4 +85,4 @@ class Variables {
   int id = 0;
 }
 
-class Templates {}
+// class Templates {}
