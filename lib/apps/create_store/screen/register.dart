@@ -1,20 +1,22 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:loadfile_baustro/apps/create_store/shops.dart';
+import 'package:path/path.dart' as pathlib;
 
 import 'package:sizer/sizer.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../db/objectbox.g.dart';
+import '../../../db/objectbox.g.dart';
 
-import '../../core/screens/base_screen.dart';
-import '../../core/models/models.dart' show Shop, Config;
-import '../../core/themes/fonts.dart';
-import '../../core/themes/input_theme.dart';
-import '../../core/utils/util.dart';
-import '../../core/structs/paths.dart' show gifTrabajando;
+import '../../../core/screens/base_screen.dart';
+import '../../../core/models/models.dart' show Shop, Config;
+import '../../../core/themes/fonts.dart';
+import '../../../core/themes/input_theme.dart';
+import '../../../core/utils/util.dart';
+import '../../../core/structs/paths.dart' show gifTrabajando;
 import 'home.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -27,25 +29,26 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController browser = TextEditingController(text: '');
+  TextEditingController browser = TextEditingController(
+      text: pathlib.join(Directory.current.path, 'comercios'));
   TextEditingController shop = TextEditingController(text: '');
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     // Cargar los valores del directorio de carga de archivos
-    openStore().then((store) {
-      final box = store.box<Config>();
-
-      final verification =
-          box.query(Config_.parameter.contains('path_browser')).build().find();
-
-      if (verification.isNotEmpty) {
-        browser.text = verification.last.value!;
-      }
-
-      store.close();
-    });
+    // openStore().then((store) {
+    //   final box = store.box<Config>();
+    //
+    //   final verification =
+    //       box.query(Config_.parameter.contains('path_browser')).build().find();
+    //
+    //   if (verification.isNotEmpty) {
+    //     browser.text = verification.last.value!;
+    //   }
+    //
+    //   store.close();
+    // });
     super.initState();
   }
 
@@ -76,8 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              Navigator.of(context)
-                  .pushNamed(GenerateShopScreen.name);
+              Navigator.of(context).pushNamed(GenerateShopScreen.name);
             }
           },
         ),
