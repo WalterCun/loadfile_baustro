@@ -1,0 +1,4 @@
+enum CalcIVA {
+  cargado,
+  desglosado,
+}

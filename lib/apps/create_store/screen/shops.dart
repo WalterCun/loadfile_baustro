@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
+import 'package:format/format.dart';
 
 import '../../../conf/settings.dart';
 import '../../../core/db/manager.dart';
@@ -16,8 +17,8 @@ import '../../../core/structs/paths.dart' show gifEsperando;
 import '../../../core/themes/fonts.dart';
 import '../../../core/themes/input_theme.dart';
 import '../../../core/utils/util.dart';
+import '../widgets/custom_tile.dart';
 import '../widgets/custom_widget.dart';
-import '../widgets/tree_buttons_widgets.dart';
 
 class GenerateShopScreen extends StatefulWidget {
   static const String name = 'generate_shop/';
@@ -32,11 +33,40 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
   int currentPageIndex = 0;
 
   TextEditingController img = TextEditingController(text: '');
+  TextEditingController ivaValue = TextEditingController(text: '');
+  // TextEditingController ivaPropina = TextEditingController(text: '');
+  // TextEditingController ivaServicio = TextEditingController(text: '');
+  // TextEditingController ivaMontoFijo = TextEditingController(text: '');
   final _formKeyShop = GlobalKey<FormState>();
   // final _formKeyParametersShop = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    ivaValue.text = '${data.iva.value}';
+
+    const destinations = [
+      NavigationDestination(
+        icon: Icon(Icons.store),
+        selectedIcon: Icon(Icons.check),
+        label: 'Bitmaps',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.handyman),
+        selectedIcon: Icon(Icons.check),
+        label: 'Configurations',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.web),
+        selectedIcon: Icon(Icons.check),
+        label: 'Templates',
+      ),
+      // NavigationDestination(
+      // icon: Icon(Icons.publish),
+      // selectedIcon: Icon(Icons.check),
+      // label: 'Publicised',
+      // ),
+    ];
+
     return BaseScreen(
       expanded: true,
       bottomNavigationBar: NavigationBar(
@@ -46,28 +76,7 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
           });
         },
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            icon: Icon(Icons.store),
-            selectedIcon: Icon(Icons.check),
-            label: 'Bitmaps',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.handyman),
-            selectedIcon: Icon(Icons.check),
-            label: 'Configurations',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.web),
-            selectedIcon: Icon(Icons.check),
-            label: 'Templates',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.publish),
-            selectedIcon: Icon(Icons.check),
-            label: 'Publicised',
-          ),
-        ],
+        destinations: destinations,
       ),
       floatActionButton: FloatingActionButton(
         heroTag: 'btnContruir',
@@ -77,7 +86,7 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
         onPressed: () {
           if (_formKeyShop.currentState!.validate()) {
             _formKeyShop.currentState!.save();
-            print(data);
+            log('$data');
           }
         },
         child: const Icon(Icons.build),
@@ -85,7 +94,7 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
       child: <Widget>[
         _pageBitsmaps(),
         _pageConfigurations(),
-        _pageTemplates(),
+        // _pageTemplates(),
         _pagePublished(),
       ][currentPageIndex],
     );
@@ -154,6 +163,19 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
               ),
       ],
     );
+  }
+
+  void changeIVA(int value, String signo) {
+    log('value: $value, signo: $signo');
+    ivaValue.text = signo.contains('+')
+        ? (data.iva.value + value).toString()
+        : (data.iva.value - value).toString();
+
+    data.iva.value = signo.contains('+')
+        ? (data.iva.value + value)
+        : (data.iva.value - value);
+
+    log(ivaValue.text);
   }
 
   Widget _pageConfigurations() {
@@ -232,9 +254,9 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
                                   validator: (String? seriePOS) =>
-                                  (seriePOS == null || seriePOS.isEmpty)
-                                      ? 'EL CAMPO ES OBLIGATORIO'
-                                      : null,
+                                      (seriePOS == null || seriePOS.isEmpty)
+                                          ? 'EL CAMPO ES OBLIGATORIO'
+                                          : null,
                                   onSaved: (String? seriePos) {
                                     if (seriePos != null ||
                                         seriePos!.isNotEmpty) {
@@ -367,50 +389,233 @@ class _GenerateShopScreenState extends State<GenerateShopScreen> {
                   ],
                 ),
                 SettingsSection(
+                  title: 'PARAMETROS G03_VARIABLES',
+                  tiles: [
+                    CustomTile(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ToggleButtomTile(
+                          title: 'CON IVA',
+                          bottoms: const [
+                            'IVA 0%',
+                            'IVA 12%',
+                            'IVA 0% & IVA 12%'
+                          ],
+                          defaultIndex: data.conIVA0,
+                          change: (int index) {
+                            data.conIVA0 = index;
+                            log('Cambio en ConIVA: ${data.conIVA0}');
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SettingsSection(
                   title: 'PARAMETROS CLT IAD',
                   tiles: [
                     CustomTile(
                         child: SwitchCustomTile(
                       title: 'IVA',
+                      initValue: data.iva.active,
+                      keepState: true,
                       children: [
-                        Center(
-                            child: ThreeButtonToggle(
-                          oneText: '0%',
-                          twoText: '12%',
-                          threeText: '18%',
+                        ToggleButtomTile(
+                          title: 'TIPO DE PROCESO',
+                          bottoms: const ['MANUAL', 'CARGADO', 'DESGLOSADO'],
+                          defaultIndex: data.iva.typeProcess - 1,
                           change: (int index) {
-                            log('$index');
+                            data.iva.typeProcess = index + 1;
+                            log('Cambio en Tipo de Proceso: ${data.iva.typeProcess}');
                           },
-                        ))
+                        ),
+                        ToggleButtomTile(
+                          title: 'TIPO DE VALOR',
+                          bottoms: const ['TASA POCENTUAL', 'VALOR FIJO'],
+                          defaultIndex: data.iva.typeValue - 1,
+                          change: (int index) {
+                            data.iva.typeValue = index + 1;
+                            log('Cambio en Tipo de Proceso: ${data.iva.typeProcess}');
+                          },
+                        ),
+                        ToggleButtomTile(
+                          title: 'VALOR DE BASE',
+                          bottoms: const [
+                            'MONTO DEL 12%',
+                            'SUBTOTAL',
+                            'MONTO DEL 0%'
+                          ],
+                          defaultIndex: data.iva.base,
+                          change: (int index) {
+                            data.iva.base = index;
+                            log('Cambio en Tipo de Proceso: ${data.iva.typeProcess}');
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'VALOR',
+                                  style: blackStyle.copyWith(
+                                      fontSize: 6.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25.h,
+                                child: TextFormField(
+                                  controller: ivaValue,
+                                  decoration: const InputDecoration(
+                                    label: Text('VALOR DE IVA'),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(4),
+                                  ],
+                                  validator: (iva) {
+                                    if (iva != null || iva!.isNotEmpty) {
+                                      return null;
+                                    }
+
+                                    return 'CAMPO OBLIGATORIO';
+                                  },
+                                  onChanged: (String? iva) {
+                                    if (iva != null || iva!.isNotEmpty) {
+                                      data.iva.value = int.parse(iva);
+                                    }
+                                  },
+                                  onSaved: (String? iva) {
+                                    if (iva != null || iva!.isNotEmpty) {
+                                      data.iva.value = int.parse(iva);
+                                    }
+                                  },
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                        child: TextButton(
+                                            child: const Text(
+                                              '+1',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              changeIVA(1, '+');
+                                            }),
+                                      ),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                        child: TextButton(
+                                            child: const Text(
+                                              '-1',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              changeIVA(1, '1');
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                        child: TextButton(
+                                            child: const Text(
+                                              '+10',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              changeIVA(10, '+');
+                                            }),
+                                      ),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.orange,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                        child: TextButton(
+                                            child: const Text(
+                                              '-10',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            onPressed: () {
+                                              changeIVA(10, '-');
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                              // TextField(
+                              //   controller: ivaValue,
+                              //   decoration: const InputDecoration(
+                              //     border: OutlineInputBorder(),
+                              //   ),
+                              //   onChanged: (String? iva) {
+                              //     log('$iva');
+                              //     // if (iva == null || iva.isEmpty) {
+                              //     //   if (double.tryParse(iva!) != null) {}
+                              //     // }
+                              //   },
+                              // )
+                            ],
+                          ),
+                        ),
                       ],
                     )),
-                    CustomTile(
-                        child: SwitchCustomTile(
-                      title: 'PROPINA',
-                      children: [
-                        Text('Sorpresa'),
-                      ],
-                    )),
-                    CustomTile(
-                        child: SwitchCustomTile(
-                      title: 'SERVICIO',
-                      children: [
-                        Text('Sorpresa'),
-                      ],
-                    )),
-                    CustomTile(
-                        child: SwitchCustomTile(
-                      title: 'INTERES',
-                      children: [
-                        Text('Sorpresa'),
-                      ],
-                    )),
+                    // CustomTile(
+                    //     child: SwitchCustomTile(
+                    //   title: 'PROPINA',
+                    //   initValue: data.propina.active,
+                    //   children: const [
+                    //     Text('Sorpresa'),
+                    //   ],
+                    // )),
+                    // CustomTile(
+                    //     child: SwitchCustomTile(
+                    //   title: 'SERVICIO',
+                    //   initValue: data.servicio.active,
+                    //   children: const [
+                    //     Text('Sorpresa'),
+                    //   ],
+                    // )),
+                    // CustomTile(
+                    //     child: SwitchCustomTile(
+                    //   title: 'INTERES',
+                    //   initValue: data.interes.active,
+                    //   children: const [
+                    //     Text('Sorpresa'),
+                    //   ],
+                    // )),
                     CustomTile(
                         child: SwitchCustomTile(
                       title: 'MONTO FIJO',
-                      children: [
-                        Text('Sorpresa'),
-                      ],
+                      initValue: data.montofijo.active,
+                      children: [],
                     )),
                   ],
                 ),

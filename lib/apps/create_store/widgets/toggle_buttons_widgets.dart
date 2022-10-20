@@ -1,31 +1,60 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
+import 'package:format/format.dart';
+
 // recurso: https://blog.logrocket.com/advanced-guide-flutter-switches-toggles/
-class ThreeButtonToggle extends StatefulWidget {
-  final String oneText, twoText, threeText;
+class GeneratedButtonToggle extends StatefulWidget {
+  // final String oneText, twoText, threeText;
+  final List<String> bottoms;
+  final int? defaultIndex;
   // final String? oneText, twoText, threeText;
   final Function(int index) change;
 
-  const ThreeButtonToggle(
+  const GeneratedButtonToggle(
       {Key? key,
-      required this.oneText,
-      required this.twoText,
-      required this.threeText,
-        required this.change
-      })
+      required this.bottoms,
+      this.defaultIndex,
+      required this.change})
       : super(key: key);
 
   // ThreeButtonToggle.two(this.oneText, this.twoText, this.threeText);
 
   @override
-  State<ThreeButtonToggle> createState() => _ThreeButtonToggleState();
+  State<GeneratedButtonToggle> createState() => _GeneratedButtonToggleState();
 }
 
-class _ThreeButtonToggleState extends State<ThreeButtonToggle> {
-  final List<bool> isSelected = [false, false, false];
+class _GeneratedButtonToggleState extends State<GeneratedButtonToggle> {
+  List<bool> isSelected = [];
+  int longText = 0;
+  bool load = false;
 
   @override
   Widget build(BuildContext context) {
+    if (!load) {
+      isSelected.clear();
+      widget.bottoms.forEach((element) {
+        longText = element.length > longText ? element.length : longText;
+      });
+
+      if (widget.defaultIndex == null) {
+        isSelected = widget.bottoms.map((e) => false).toList();
+      } else {
+        for (var i = 0; i <= widget.bottoms.length - 1; i++) {
+          if (i == widget.defaultIndex) {
+            isSelected.add(true);
+          } else {
+            isSelected.add(false);
+          }
+          log('i: $i / ${widget.defaultIndex}');
+        }
+      }
+      load = true;
+    }
+
+    log('isSelecte: ${isSelected.length} / children: ${widget.bottoms.length}');
+
     return ToggleButtons(
         // list of booleans
         isSelected: isSelected,
@@ -44,24 +73,17 @@ class _ThreeButtonToggleState extends State<ThreeButtonToggle> {
         // border properties for each toggle
         renderBorder: true,
         borderColor: Colors.black,
-        borderWidth: 1.0,
+        borderWidth: 1.2,
         borderRadius: BorderRadius.circular(10),
         selectedBorderColor: Colors.blue,
 // add widgets for which the users need to toggle
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            child: Text(widget.oneText, style: TextStyle(fontSize: 18)),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            child: Text(widget.twoText, style: TextStyle(fontSize: 18)),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            child: Text(widget.threeText, style: TextStyle(fontSize: 18)),
-          ),
-        ],
+        children: widget.bottoms
+            .map((texto) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('{text:^$longText}'.format({#text: texto}),
+                      style: const TextStyle(fontSize: 12)),
+                ))
+            .toList(),
         // to select or deselect when pressed
         onPressed: (int newIndex) {
           widget.change(newIndex);
@@ -80,5 +102,4 @@ class _ThreeButtonToggleState extends State<ThreeButtonToggle> {
           });
         });
   }
-
 }

@@ -5,17 +5,23 @@ import '../../../core/animated/section_animated.dart';
 
 class SwitchCustomTile extends StatefulWidget {
   final String title;
+  bool initValue;
+  bool keepState;
   final List<Widget> children;
 
-  const SwitchCustomTile({Key? key, required this.title, required this.children}) : super(key: key);
+  SwitchCustomTile({
+    Key? key,
+    required this.title,
+    this.initValue = false,
+    this.keepState = false,
+    required this.children,
+  }) : super(key: key);
 
   @override
   State<SwitchCustomTile> createState() => _SwitchCustomTileState();
 }
 
 class _SwitchCustomTileState extends State<SwitchCustomTile> {
-  bool switchT = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,15 +30,15 @@ class _SwitchCustomTileState extends State<SwitchCustomTile> {
           title: widget.title,
           onToggle: (switchValue) {
             setState(() {
-              switchT = switchValue;
+              widget.initValue = switchValue;
             });
           },
-          switchValue: switchT,
+          switchValue: widget.keepState ? true : widget.initValue,
         ),
         ExpandedSection(
-            expand: switchT,
+            expand: widget.keepState ? true : widget.initValue,
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(25.0),
               child: Column(
                 children: widget.children,
               ),

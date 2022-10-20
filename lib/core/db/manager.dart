@@ -1,25 +1,25 @@
-enum Calculo {
-  cargado,
-  desglosado,
-}
-
 class CLTIAD {
+  /// Activar o descativar la Opcion
   bool active;
-  Calculo? valor;
-  int? valor1;
-  int? valor2;
-  int? valor3;
-  int? value;
-  String format;
+  int typeProcess;
+  int typeValue;
+  int base;
+  int value;
 
-  CLTIAD(
-      {this.active = false,
-      this.valor,
-      this.valor1,
-      this.valor2,
-      this.value,
-      this.valor3,
-      this.format = ''});
+  CLTIAD({
+    this.active = false,
+    required this.typeProcess,
+    required this.typeValue,
+    required this.base,
+    required this.value,
+  }) {
+    assert(typeProcess >= 1 && typeProcess <= 3,
+        'Error value typeProcces, validate is values 1:Ingreso Manual; 2: Calculado y cargado al valor base 3: Calculado y descargad oal valor base');
+    assert(typeValue >= 1 && typeValue <= 2,
+        'Error value typeValue, validate is values 1: Tasa porcentual; 2: Valor Fijo');
+    assert(base >= 0 && base <= 2,
+        'Error value base, validate is values 0: Monto 12; 1: Subtotal; 2: Monto 0');
+  }
 }
 
 class DataProvider {
@@ -40,34 +40,46 @@ class DataProvider {
 
   String? pathLogo;
 
+  int conIVA0 = 1;
+
   final iva = CLTIAD(
-      value: 1200,
-    // format: 'IAD0="1IVA:,3,1,0,1200*"'
-    format: '{active}IAD0="1IVA:,3,1,0,{value:4d}*"'
+    active: true,
+    typeProcess: 3,
+    typeValue: 1,
+    base: 0,
+    value: 1200,
   );
 
   final propina = CLTIAD(
+    typeProcess: 1,
+    typeValue: 2,
+    base: 0,
     value: 0,
     // format: 'IAD1="2PROPINA:,1,2,0,000*"'
-    format: '{active}IAD1="2PROPINA:,1,2,0,{value:3d}*"'
   );
 
   final servicio = CLTIAD(
-    value: 10,
+    typeProcess: 1,
+    typeValue: 2,
+    base: 0,
+    value: 0,
     // format: 'IAD2="3SERVICIO:,3,2,0,010*"'
-    format: '{active}IAD2="3SERVICIO:,3,2,0,{value:3d}*"'
   );
 
   final interes = CLTIAD(
+    typeProcess: 1,
+    typeValue: 1,
+    base: 1,
     value: -1,
     // format:'IAD3="4INTERES,1,1,1,*"'
-    format:'{active}IAD3="4INTERES,1,1,1,*"'
   );
 
   final montofijo = CLTIAD(
+    typeProcess: 2,
+    typeValue: 2,
+    base: 1,
     value: 22,
     // format: 'IAD4="5MONTOFJ:,2,2,1,022*"'
-    format: '{active}IAD4="5MONTOFJ:,2,2,1,{value:3d}*"'
   );
 
   List<String> listAdvertising = [];

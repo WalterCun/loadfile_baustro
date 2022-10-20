@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 class GenericResources {
-  late final String path;
-  late final String? tree;
-  late final String? filename;
-  late final String? ext;
+  String path;
+  String? tree;
+  String? filename;
+  String? ext;
 
   GenericResources({required this.path}) {
     final data = _getData(path);
@@ -13,16 +15,23 @@ class GenericResources {
   }
 
   Map _getData(String path) {
-    String fileName = path.split("\/").last;
-    String treeDir = path.replaceAll('/$fileName', '');
+    log('Crear MetaData de $path');
+    final Map meta = {};
 
-    if (!fileName.contains('.')) {
-      return {'filename': fileName, 'ext': null};
-    }
+    String fileName = path.split(RegExp(r"[\|/]")).last;
+    meta.addAll({'filename': fileName});
+
+    String treeDir = path.replaceAll('$fileName', '');
+    meta.addAll({'tree': treeDir});
 
     String fileExtension = fileName.split('.').last;
+    meta.addAll({'ext': fileExtension});
 
-    return {'tree': treeDir, 'filename': fileName, 'ext': fileExtension};
+    if (!fileName.contains('.')) {
+      meta.addAll({'ext': null});
+    }
+
+    return meta;
   }
 }
 
@@ -30,7 +39,7 @@ class Imagen extends GenericResources {
   Imagen({required super.path});
 }
 
-class Gif extends GenericResources{
+class Gif extends GenericResources {
   Gif({required super.path});
 }
 

@@ -17,11 +17,11 @@ final cltIAD = TemplatesFiles(
     tree: ['Configuraciones'],
     name: 'CLT',
     ext: 'IAD',
-    content: '''{activate1}IAD0="1IVA:,3,1,0,1200*"
-{activate2}IAD1="2PROPINA:,1,2,0,000*"
-{activate3}IAD2="3SERVICIO:,3,2,0,010*"
-{activate4}IAD3="4INTERES,1,1,1,*"
-{activate5}IAD4="5MONTOFJ:,2,2,1,022*"''');
+    content: '''{activateIva}IAD0="1IVA:,{tipoProcesoIva},{tipoValorIva},{baseIva},{valueIva:d}*"
+{activatePropina}IAD1="2PROPINA:,{tipoProcesoPropina},{tipoValorPropina},{basePropina},{valuePropina:3d}*"
+{activateServicio}IAD2="3SERVICIO:,{tipoProcesoServicio},{tipoValorServicio},{baseServicio},{valueServicio:3d}*"
+{activateInteres}IAD3="4INTERES,{tipoProcesoInteres},{tipoValorInteres},{baseInteres},*"
+{activateMontoFijo}IAD4="5MONTOFJ:,{tipoProcesoMontoFijo},{tipoValorMontoFijo},{baseMontoFijo},{valueMontoFijo:3d}*"''');
 
 final g03Variables = TemplatesFiles(
     tree: ['Configuraciones'],
