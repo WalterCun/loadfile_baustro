@@ -2,17 +2,15 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:sizer/sizer.dart';
 import 'package:path/path.dart' show join;
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
-
-import '../../../db/objectbox.g.dart';
+import '../../../conf/settings.dart';
+import '../../../core/db/manager.dart';
 import '../../../core/screens/base_screen.dart';
-import '../../../core/models/models.dart' show Shop, Config;
+import '../../../core/inputformatters/inputsfomatters.dart';
 import '../../../core/themes/fonts.dart';
 import '../../../core/themes/input_theme.dart';
 import '../../../core/utils/util.dart';
@@ -31,26 +29,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController browser = TextEditingController(
-      text: join(Directory.current.path, 'comercios'));
+  TextEditingController browser =
+      TextEditingController(text: join(Directory.current.path, 'comercios'));
   TextEditingController shop = TextEditingController(text: '');
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    // Cargar los valores del directorio de carga de archivos
-    // openStore().then((store) {
-    //   final box = store.box<Config>();
-    //
-    //   final verification =
-    //       box.query(Config_.parameter.contains('path_browser')).build().find();
-    //
-    //   if (verification.isNotEmpty) {
-    //     browser.text = verification.last.value!;
-    //   }
-    //
-    //   store.close();
-    // });
     super.initState();
   }
 
@@ -63,7 +48,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           heroTag: 'return Home',
           backgroundColor: Colors.red,
           hoverColor: Colors.orange,
-          tooltip: 'Cancel store creation,',
+          tooltip: 'CANCELAR',
           child: const Icon(Icons.cancel),
           onPressed: () {
             Navigator.of(context).pushReplacementNamed(HomeScreen.name);
@@ -76,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           heroTag: 'continueShops',
           backgroundColor: Colors.blue,
           hoverColor: Colors.green,
-          tooltip: 'Save Changes',
+          tooltip: 'GUARDAR CAMBIOS',
           child: const Icon(Icons.save),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -91,6 +76,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = DataProvider();
+
     return BaseScreen(
       padding: const EdgeInsets.all(15),
       expanded: false,
@@ -107,8 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      AppLocalizations.of(context)!
-                          .form_fieldForm_chooseBrowser,
+                      'DIRECTORIO DE SALIDA',
                       style: blackStyle.copyWith(fontSize: 8.sp),
                     ),
                   ),
@@ -129,6 +115,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }
                             return null;
                           },
+                          onSaved: (String? path){
+                            data.pathOutput = path;
+                          },
                         ),
                       ),
                       SizedBox(
@@ -136,39 +125,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       ElevatedButton(
                         style: InputThemes.elevatedButtonTheme,
-                        child: Text(AppLocalizations.of(context)!
-                            .button_openFileChoose),
+                        child: Text('CAMBIAR DIRECTORIO'),
                         onPressed: () {
                           openExplorer().then((path) {
                             if (path != null) {
                               browser.text = path;
-                              openStore().then((store) {
-                                late Config conf;
-                                late int id;
-
-                                final box = store.box<Config>();
-
-                                final verification = box
-                                    .query(Config_.parameter
-                                        .contains('path_browser'))
-                                    .build()
-                                    .find();
-
-                                if (!(verification.isNotEmpty)) {
-                                  conf = Config(
-                                      parameter: 'path_browser', value: path);
-                                  id = box.put(conf);
-                                  log('New create row: $id');
-                                } else {
-                                  conf = verification.last;
-                                  conf.value = path;
-                                }
-
-                                id = box.put(conf);
-                                log('Replace row: $id');
-
-                                store.close();
-                              });
+                              // data.pathOutput = path;
                             }
                           });
                         },
@@ -182,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      AppLocalizations.of(context)!.form_fieldForm_nameShops,
+                      'NOMBRE DEL COMERCIO',
                       style: blackStyle.copyWith(fontSize: 8.sp),
                     ),
                   ),
@@ -191,6 +153,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                     ),
+                    inputFormatters: [
+                      UpperCaseTextFormatter(),
+                      LengthLimitingTextInputFormatter(limitLengthShop),
+                      FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]+'))
+                    ],
                     validator: (String? path) {
                       log('El nombre del comercio: $path');
                       if (path == null || path.isEmpty) {
@@ -198,17 +165,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                       return null;
                     },
-                    onSaved: (String? shop) async {
-                      late Shop shops;
-                      late int id;
-                      final store = await openStore();
-                      final box = store.box<Shop>();
-
-                      shops = Shop();
-                      id = box.put(shops);
-                      log('New shops create id: $id');
-
-                      store.close();
+                    onSaved: (String? shop) {
+                      if( shop != null || shop!.isNotEmpty){
+                        data.nameShop = shop;
+                      }
                     },
                   ),
                 ],

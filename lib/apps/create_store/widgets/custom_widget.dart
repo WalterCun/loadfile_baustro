@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 
-import '../../core/animated/section_animated.dart';
+import '../../../core/animated/section_animated.dart';
 
 class SwitchCustomTile extends StatefulWidget {
   final String title;

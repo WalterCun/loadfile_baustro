@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../../core/screens/base_screen.dart';
 import '../../../core/structs/paths.dart' show gifDescanzando;
 import '../../../core/themes/fonts.dart';
@@ -32,8 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           IconMenuFloatButton(
             icon: Icons.add,
-            tooltip: AppLocalizations.of(context)!
-                .widget_floatActionButton_crearComercio,
+            tooltip: 'CREAR NUEVO COMERCIO',
             onPressed: () {
               Navigator.of(context).pushNamed(RegisterScreen.name);
             },
@@ -56,8 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Center(
-                child: Text(
-                  AppLocalizations.of(context)!.screen_home_title,
+                child: Text('FLOAD FILE - GENERADOR DE COMERCIOS',
                   style: blackStyle,
                   textAlign: TextAlign.center,
                 ),

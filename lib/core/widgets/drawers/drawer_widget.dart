@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loadfile_baustro/core/structs/paths.dart';
 import 'package:loadfile_baustro/core/themes/colors.dart';
 
@@ -36,13 +35,13 @@ class _DefaultDrawerState extends State<DefaultDrawer>{
                 _drawerHeader(),
                 ListTile(
                   leading: const Icon(Icons.history),
-                  title: Text(AppLocalizations.of(context)!.widget_drawer_button_history),
+                  title: Text('historial'),
                   onTap: () {},
                 ),
 
                 ListTile(
                   leading: const Icon(Icons.restore_from_trash),
-                  title: Text(AppLocalizations.of(context)!.widget_drawer_button_trash),
+                  title: Text('basurero'),
                   onTap: () {},
                 ),
 
@@ -72,7 +71,7 @@ class _DefaultDrawerState extends State<DefaultDrawer>{
                 ListTile(
                   leading: const Icon(Icons.settings),
                   title:
-                  Text(AppLocalizations.of(context)!.widget_drawer_button_settings),
+                  Text('configuraciones'),
                   onTap: () {
                     Scaffold.of(context).closeDrawer();
                     Navigator.of(context).pushNamed(SettingsScreen.name);
@@ -113,7 +112,7 @@ class _DefaultDrawerState extends State<DefaultDrawer>{
         )
       ),
       child: ListTile(
-        title: Text(AppLocalizations.of(context)!.widget_drawer_button_exit),
+        title: Text('salir'),
         trailing: const Icon(
           Icons.logout,
           color: Colors.red,

@@ -6,7 +6,6 @@ import 'package:sizer/sizer.dart';
 import 'apps/create_store/screen/home.dart';
 import 'conf/routers.dart';
 import 'conf/settings.dart';
-import 'l10n/l10n.dart';
 
 main() {
   runApp(const FLoadFileApp());
@@ -51,9 +50,6 @@ class _FLoadFileAppState extends State<FLoadFileApp> {
         routes: routes,
         onGenerateRoute: (settings) => onGenerateRoutes(settings),
         onUnknownRoute: onUnknownRoutes,
-        supportedLocales: L10n.supportedLocales,
-        localizationsDelegates: L10n.localizationsDelegates,
-        // locale: locale.locale,
       ),
     );
   }
