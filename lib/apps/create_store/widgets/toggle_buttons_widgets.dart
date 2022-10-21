@@ -53,8 +53,6 @@ class _GeneratedButtonToggleState extends State<GeneratedButtonToggle> {
       load = true;
     }
 
-    log('isSelecte: ${isSelected.length} / children: ${widget.bottoms.length}');
-
     return ToggleButtons(
         // list of booleans
         isSelected: isSelected,

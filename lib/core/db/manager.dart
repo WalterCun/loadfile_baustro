@@ -20,6 +20,26 @@ class CLTIAD {
     assert(base >= 0 && base <= 2,
         'Error value base, validate is values 0: Monto 12; 1: Subtotal; 2: Monto 0');
   }
+
+  Map toJson() {
+    return {
+      'active': active,
+      'typeProcess': typeProcess,
+      'typeValue': typeValue,
+      'base': base,
+      'value': value
+    };
+  }
+
+  bool validate() {
+    bool isValid = false;
+
+    if (active != true) {
+      return true;
+    }
+
+    return isValid;
+  }
 }
 
 class DataProvider {
@@ -27,7 +47,7 @@ class DataProvider {
   factory DataProvider() => _singlenton;
   DataProvider._internal();
 
-  String? pathOutput;
+  String? pathInput;
 
   String? nameShop;
   String? codeShop;
@@ -83,6 +103,28 @@ class DataProvider {
   );
 
   List<String> listAdvertising = [];
+
+  Map toJson() {
+    return {
+      'pathOutput': pathInput,
+      'nameShop': nameShop,
+      'codeShop': codeShop,
+      'serie': serie,
+      'direction': direction,
+      'phone': phone,
+      'city': city,
+      'ruc': ruc,
+      'pathLogo': pathLogo,
+      'conIVA0': conIVA0,
+      'iva': iva.toJson(),
+      'propina': propina.toJson(),
+      'servicio': servicio.toJson(),
+      'interes': interes.toJson(),
+      'montofijo': montofijo.toJson(),
+      'listAdvertising': listAdvertising,
+    };
+  }
+
 }
 
 //recursos: https://pub.dev/packages/format/example

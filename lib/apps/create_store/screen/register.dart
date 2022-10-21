@@ -116,7 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return null;
                           },
                           onSaved: (String? path){
-                            data.pathOutput = path;
+                            data.pathInput = path;
                           },
                         ),
                       ),

@@ -49,13 +49,14 @@ Future<int> readFile({required String pathFilename}) async {
 
 Future<File> transfer(sourceFile,
     {required String to, bool deleteOrigin = true}) async {
+
   try {
     /// prefer using rename as it is probably faster
     /// if same directory path
-    return await sourceFile.rename(to);
+    return await File(sourceFile).rename(to);
   } catch (e) {
     /// if rename fails, copy the source file
-    final newFile = await sourceFile.copy(to);
+    final newFile = await File(sourceFile).copy(to);
     if (deleteOrigin) _delete(path: sourceFile.path);
     return newFile;
   }
